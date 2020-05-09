@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Typography, Grid, TextField, Button, Modal, Paper, makeStyles, InputLabel } from '@material-ui/core';
+import { Typography, Grid, TextField, Button, Modal, Paper, makeStyles } from '@material-ui/core';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { firebase } from '../../config';
-import { statusOptions, tagOptions } from '../../config/constants';
+import { createTask } from '../../services/firebaseService';
+import { statusOptions, tagOptions, usersList } from '../../config/constants';
 
 import DropDown from '../DropdDown';
 
@@ -35,18 +35,19 @@ function CreateTask({ isVisible, toggleVisible }) {
   const [dueDate, setDueDate] = useState(new Date());
   const [tag, setTag] = useState('');
   const [status, setStatus] = useState('');
+  const [user, setUser] = useState('');
 
-  const onCreateTask = () => {
-    const db = firebase.firestore();
-    db.collection("tasks").add({
+  async function onCreateTask() {
+    const data = await createTask({
       title: title,
       description: description,
       status: status ? status : 'to-do',
       tag: tag ? tag : 'article',
-      assignee: "Foo User",
+      assignee: user ? user : 'not assigned',
       dueDate: dueDate,
       createdDate: new Date()
     });
+    console.log(data);
   }
 
   const classes = useStyles();
@@ -69,7 +70,7 @@ function CreateTask({ isVisible, toggleVisible }) {
             <Grid item md={5}>
               <DropDown options={tagOptions} handleOnChange={setTag} label={'Tags'}/>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item md={5}>
               <Typography variant="caption">Due Date</Typography><br/>
               <DatePicker
                 className={classes.datePickerWrapper}
@@ -78,9 +79,13 @@ function CreateTask({ isVisible, toggleVisible }) {
                 onChange={date => setDueDate(date)}
               />
           </Grid>
+          <Grid item md={2} />
+          <Grid item md={5}>
+            <DropDown options={usersList} handleOnChange={setUser} label={'Assignee'}/>
+          </Grid>
         </Grid>
         </form>
-        <Button variant="contained" onClick={onCreateTask}>
+        <Button variant="contained" onClick={onCreateTask} disabled={(title.length === 0 || description.length === 0)}>
           create
         </Button>
       </Grid>

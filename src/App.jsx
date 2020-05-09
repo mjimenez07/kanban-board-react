@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Grid, ThemeProvider, makeStyles } from '@material-ui/core';
+import { Grid, ThemeProvider, makeStyles, Button } from '@material-ui/core';
 import { DragDropContext } from "react-beautiful-dnd";
 
-import { firebase, theme } from './config';
+import { theme } from './config';
+import { getTasks } from './services/firebaseService';
 import { multiSelectTo as multiSelect } from './helpers';
 
 import CreateTask from './components/CreateTask';
@@ -22,17 +23,17 @@ const useStyles = makeStyles({
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [isVisible, setIsvisible] = useState(false);
-  const toggleIsVisible = useCallback(() => setIsvisible(!isVisible), [isVisible]);
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleIsVisible = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const db = firebase.firestore();
-      const data = await db.collection("tasks").get();
-      setTasks(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+      const data = await getTasks();
+      setTasks(data);
     };
     fetchData();
   }, []);
+  console.log(tasks);
 
   const mockData = [
     {
@@ -88,7 +89,7 @@ function App() {
   const [selectedTasksIds, setSelectedTasksIds] = useState([]);
   const [draggingTaskId, setDragginTaskId] = useState(null)
 
-  const onDragStart = (start) => {
+  function onDragStart(start) {
     const id = start.draggableId;
     const selected = selectedTasksIds.find(
       (taskId)  => taskId === id,
@@ -100,7 +101,7 @@ function App() {
     setDragginTaskId(start.draggableId);
   };
 
-  const onDragEnd = (result, columns, setColumns) => {
+  function onDragEnd(result, columns, setColumns) {
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -124,6 +125,7 @@ function App() {
         setSelectedTasksIds([]);
         return;
       }
+
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -152,10 +154,9 @@ function App() {
     setSelectedTasksIds([]);
   };
 
-
   const unselectAll = () => setSelectedTasksIds([]);
 
-  const toggleSelection = (taskId) => {
+  function toggleSelection(taskId) {
     const wasSelected = selectedTasksIds.includes(taskId);
 
     const newTaskIds = (() => {
@@ -179,8 +180,7 @@ function App() {
     setSelectedTasksIds(newTaskIds);
   };
 
-
-  const toggleSelectionInGroup = (taskId) => {
+   function toggleSelectionInGroup(taskId) {
     const index = selectedTasksIds.indexOf(taskId);
 
     // if not selected - add it to the selected items
@@ -195,8 +195,7 @@ function App() {
     setSelectedTasksIds(shallow);
   };
 
-    // This behaviour matches the MacOSX finder selection
-   const multiSelectTo = (newTaskId) => {
+   function multiSelectTo(newTaskId) {
       const updated = multiSelect(
         columns,
         selectedTasksIds,
@@ -210,47 +209,11 @@ function App() {
       setSelectedTasksIds(updated)
     };
 
-  function onWindowKeyDown (event) {
-    if (event.defaultPrevented) {
-      return;
-    }
-
-    if (event.key === 'Escape') {
-      unselectAll();
-    }
-  };
-
-  function onWindowClick (event) {
-    if (event.defaultPrevented) {
-      return;
-    }
-    unselectAll();
-  };
-
-  function onWindowTouchEnd (event) {
-    if (event.defaultPrevented) {
-      return;
-    }
-    unselectAll();
-  };
-
-  useEffect(() => {
-    window.addEventListener('click', onWindowClick);
-    window.addEventListener('keydown', onWindowKeyDown);
-    window.addEventListener('touchend', onWindowTouchEnd);
-    return () => {
-      window.removeEventListener('click', onWindowClick);
-      window.removeEventListener('keydown', onWindowKeyDown);
-      window.removeEventListener('touchend', onWindowTouchEnd);
-    }
-  }, []);
-
   const classes = useStyles(theme);
-
 
   return (
     <ThemeProvider theme={theme}>
-      <button  className={classes.createTaskButton} onClick={() => toggleIsVisible()}>create Task </button>
+      <Button variant="contained" className={classes.createTaskButton} onClick={() => toggleIsVisible()}>create Task </Button>
       <DragDropContext
         onDragStart={onDragStart}
         onDragEnd={result => onDragEnd(result, columns, setColumns)}
