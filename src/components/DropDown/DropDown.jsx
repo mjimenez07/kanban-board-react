@@ -8,7 +8,8 @@ const useStyles = makeStyles({
     marginTop: '10px',
     marginBottom: '20px',
   }
-})
+});
+
 function DropDown({ options, handleOnChange, label }) {
   const classes = useStyles();
   return <Select className={classes.dropdown} placeholder={label} options={options} onChange={({ value }) => handleOnChange(value)}/>

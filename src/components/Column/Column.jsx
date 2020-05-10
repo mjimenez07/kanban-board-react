@@ -11,7 +11,7 @@ const getSelectedMap = memoizeOne((selectedTaskIds) =>
   }, {}),
 );
 
-function Column({ column, columnId, multiSelectTo, toggleSelection, toggleSelectionInGroup, selectedTasksIds, draggingTaskId }) {
+const Column = React.memo(({ column, columnId, multiSelectTo, toggleSelection, toggleSelectionInGroup, selectedTasksIds, draggingTaskId }) => {
   return (
     <div style={{
       display: "flex",
@@ -62,6 +62,6 @@ function Column({ column, columnId, multiSelectTo, toggleSelection, toggleSelect
       </Droppable>
     </div>
   )
-}
+})
 
 export default Column;

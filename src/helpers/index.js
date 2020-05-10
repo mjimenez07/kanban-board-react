@@ -1,6 +1,6 @@
 import initials from 'initials';
 
-export const getHomeColumn = (columns, taskId) => {
+function getHomeColumn(columns, taskId) {
   const columnId = Object.keys(columns).find(column => {
     return columns[column].items.find(item => item.id === taskId);
   });
@@ -8,7 +8,7 @@ export const getHomeColumn = (columns, taskId) => {
   return columns[columnId];
 };
 
-export const multiSelectTo = (columns, selectedTaskIds, newTaskId ) => {
+export function multiSelectTo(columns, selectedTaskIds, newTaskId ) {
   //verify this function after adding the first item the next tasks gets added as an object instead of just ids
   // Nothing already selected
   if (!selectedTaskIds.length) {
@@ -60,4 +60,33 @@ export const multiSelectTo = (columns, selectedTaskIds, newTaskId ) => {
 
 export function getUserInitials(name) {
   return initials(name).toUpperCase();
+}
+
+function filterTasksByTitle(title, tasks) {
+  if (!Array.isArray(tasks)) {
+    return [];
+  }
+
+  if (!title) {
+    return tasks;
+  }
+
+  return tasks.filter((task) => new RegExp(title, 'gi').test(task.title));
+}
+
+function filterTasksByTag(tag, tasks) {
+  if (!Array.isArray(tasks)) {
+    return [];
+  }
+
+  if (!tag) {
+    return tasks;
+  }
+
+  return tasks.filter((task) => task.tag === tag);
+}
+
+
+export function applyTasksFilters(titleFilter, tagFilter, tasks) {
+  return filterTasksByTag(tagFilter, filterTasksByTitle(titleFilter, tasks));
 }

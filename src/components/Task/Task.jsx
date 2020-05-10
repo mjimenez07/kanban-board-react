@@ -2,6 +2,7 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Card, CardContent, CardHeader, Typography, Avatar, makeStyles } from "@material-ui/core";
 
+import { tagOptions, statusOptions } from '../../config/constants';
 import { getUserInitials } from '../../helpers/index';
 
 const keyCodes = {
@@ -13,8 +14,7 @@ const keyCodes = {
 };
 const primaryButton = 0;
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   avatarWrapper: {
     display: 'flex',
     alignItems: 'center'
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: '0'
   }
-}))
+});
 
 function Task({
   index,
@@ -37,7 +37,6 @@ function Task({
   toggleSelectionInGroup,
   multiSelectTo,
   isSelected,
-  isGhosting
 }) {
 
   function performAction(event) {
@@ -123,7 +122,6 @@ function Task({
     {(provided, snapshot) => {
       return (
         <div
-
         onClick={handleOnClick}
         onTouchEnd={handleOnTouchEnd}
         onKeyDown={(event) => handleOnKeyDown(event, snapshot)}
@@ -151,7 +149,10 @@ function Task({
             {task.assignee}
           </Typography>
           <Typography variant="body2">
-            Status: {task.status}
+            Status: {statusOptions.find(option => option.value === task.status).label}
+          </Typography>
+          <Typography variant="body2">
+            Tag: {tagOptions.find(option => option.value === task.tag).label}
           </Typography>
           </CardContent>
         </Card>
