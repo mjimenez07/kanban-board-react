@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Typography, Grid, TextField, Button, Modal, makeStyles } from '@material-ui/core';
+import { useStoreActions } from 'easy-peasy';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { createTask } from '../../services/firebaseService';
 import { statusOptions, tagOptions, usersList } from '../../config/constants';
 
 import CreateTaskLayOut from '../../layouts/CreateTaskLayOut';
@@ -40,9 +40,10 @@ function CreateTask({ isVisible, toggleVisible }) {
   const [tag, setTag] = useState('');
   const [status, setStatus] = useState('');
   const [user, setUser] = useState('');
+  const createTask = useStoreActions(actions => actions.createTask);
 
   async function onCreateTask() {
-    const data = await createTask({
+     createTask({
       title: title,
       description: description,
       status: status ? status : 'to-do',
@@ -51,7 +52,7 @@ function CreateTask({ isVisible, toggleVisible }) {
       dueDate: dueDate,
       createdDate: new Date()
     });
-    console.log(data);
+    toggleVisible();
   }
 
   const classes = useStyles();

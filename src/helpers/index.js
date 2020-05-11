@@ -86,7 +86,6 @@ function filterTasksByTag(tag, tasks) {
   return tasks.filter((task) => task.tag === tag);
 }
 
-
 export function applyTasksFilters(titleFilter, tagFilter, tasks) {
   return filterTasksByTag(tagFilter, filterTasksByTitle(titleFilter, tasks));
 }

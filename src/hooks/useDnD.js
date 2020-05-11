@@ -1,10 +1,17 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useStoreActions } from 'easy-peasy';
+
 import { multiSelectTo as multiSelect } from '../helpers';
 
 function useDnD(baseColumns) {
   const [columns, setColumns] = useState(baseColumns);
   const [selectedTasksIds, setSelectedTasksIds] = useState([]);
   const [draggingTaskId, setDragginTaskId] = useState(null);
+  const { updateTask, updateTasks } = useStoreActions(actions => actions);
+
+  useEffect(() => {
+    setColumns(baseColumns);
+  }, [baseColumns]);
 
   const onDragStart = useCallback((start) => {
     const { draggableId } = start;
@@ -28,6 +35,7 @@ function useDnD(baseColumns) {
       const destColumn = columns[destination.droppableId];
 
       if(selectedTasksIds.length > 1) {
+        const selectedTasks = sourceColumn.items.filter(item => selectedTasksIds.includes(item.id));
         setColumns({
           ...columns,
           [source.droppableId]: {
@@ -36,14 +44,19 @@ function useDnD(baseColumns) {
           },
           [destination.droppableId]: {
             ...destColumn,
-            items: [...destColumn.items, ...sourceColumn.items.filter(item => selectedTasksIds.includes(item.id))]
+            items: [...destColumn.items, ...selectedTasks]
           }
+        });
+        updateTasks({
+          statusValue: destination.droppableId,
+          tasks: selectedTasks
         });
         setDragginTaskId(null);
         setSelectedTasksIds([]);
         return;
       }
 
+      const task = sourceColumn.items.find(item => item.id === draggingTaskId);
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -52,9 +65,17 @@ function useDnD(baseColumns) {
         },
         [destination.droppableId]: {
           ...destColumn,
-          items: [...destColumn.items, sourceColumn.items.find(item => item.id === draggingTaskId)]
+          items: [...destColumn.items, task]
         }
       });
+
+      updateTask({
+        id: draggingTaskId,
+        values: {
+          ...task,
+          status: destination.droppableId
+        }
+      })
     } else {
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];
