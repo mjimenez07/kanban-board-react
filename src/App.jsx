@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, makeStyles, Button } from '@material-ui/core';
+import {
+  ThemeProvider,
+  makeStyles,
+  Button,
+  CircularProgress
+} from '@material-ui/core';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import { theme } from './config';
@@ -12,6 +17,16 @@ import Board from './components/Board';
 const useStyles = makeStyles({
   createTaskButton: {
     position: 'absolute'
+  },
+  circularProgressWrapper: {
+    top: '50%',
+    left: '50%',
+    position: 'absolute'
+  },
+  circularProgressBar: {
+    color: 'rgb(187, 46, 31)',
+    width: '100px !important',
+    height: '100px !important'
   }
 });
 
@@ -47,6 +62,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {tasks.length === 0 && (
+        <div className={classes.circularProgressWrapper}>
+          <CircularProgress className={classes.circularProgressBar} />
+        </div>
+      )}
       <Button
         variant="contained"
         className={classes.createTaskButton}
