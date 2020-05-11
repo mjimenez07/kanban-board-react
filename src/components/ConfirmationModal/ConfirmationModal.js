@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText} from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText
+} from '@material-ui/core';
 
- function ConfirmationModal({isVisible, handleConfirm, handleCancel}) {
+function ConfirmationModal({ isVisible, handleConfirm, handleCancel }) {
   const [open, setOpen] = React.useState(isVisible);
 
   const handleClose = () => {
@@ -12,13 +19,8 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, DialogContent
 
   return (
     <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
-        <DialogTitle style={{ cursor: 'move' }}>
-          Deleting Task
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle style={{ cursor: 'move' }}>Deleting Task</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are You sure about this? there's no way back.
@@ -41,6 +43,6 @@ ConfirmationModal.propTypes = {
   isVisible: PropTypes.bool,
   handleConfirm: PropTypes.func,
   handleCancel: PropTypes.func
-}
+};
 
 export default ConfirmationModal;

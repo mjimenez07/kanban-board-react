@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     width: '100vw',
     height: '100vh',
     color: '#fff'
-  },
+  }
 });
 
 function Board({ baseColumns }) {
@@ -34,10 +34,10 @@ function Board({ baseColumns }) {
 
   return (
     <DragDropContext
-    onDragStart={onDragStart}
-    onDragEnd={result => onDragEnd(result, columns)}
-  >
-    <LayOut className={classes.wrapper}>
+      onDragStart={onDragStart}
+      onDragEnd={(result) => onDragEnd(result, columns)}
+    >
+      <LayOut className={classes.wrapper}>
         {Object.entries(columns).map(([columnId, column]) => {
           return (
             <Column
@@ -52,14 +52,13 @@ function Board({ baseColumns }) {
             />
           );
         })}
-    </LayOut>
-  </DragDropContext>
-
+      </LayOut>
+    </DragDropContext>
   );
 }
 
 Board.propTypes = {
   baseColumns: PropTypes.object
-}
+};
 
 export default Board;

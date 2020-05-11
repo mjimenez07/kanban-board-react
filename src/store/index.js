@@ -1,5 +1,10 @@
 import { createStore, thunk, action } from 'easy-peasy';
-import { getTasks, createTask, updateTask, deleteTask } from '../services/firebaseService';
+import {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask
+} from '../services/firebaseService';
 
 const tasksModel = {
   tasks: [],
@@ -10,7 +15,7 @@ const tasksModel = {
     try {
       const data = await getTasks();
       actions.addTasks(data);
-    } catch(error) {
+    } catch (error) {
       throw new Error(`Something went wrong fetching the tasks ${error}`);
     }
   }),
@@ -18,21 +23,27 @@ const tasksModel = {
     try {
       await createTask(payload);
       actions.fetchTasks();
-    } catch(error) {
-      throw new Error(`Something went wrong while creating the task please ${error}`);
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while creating the task please ${error}`
+      );
     }
   }),
   updateTask: thunk(async (_, { id, values }) => {
     try {
       await updateTask(id, values);
-    } catch(error) {
+    } catch (error) {
       throw new Error(`Something went wrong while updating the task ${error}`);
     }
   }),
-  updateTasks: thunk(async (_, {statusValue, tasks}) => {
+  updateTasks: thunk(async (_, { statusValue, tasks }) => {
     try {
-      Promise.all(tasks.map(task => updateTask(task.id, { ...task, status: statusValue })));
-    } catch(error) {
+      Promise.all(
+        tasks.map((task) =>
+          updateTask(task.id, { ...task, status: statusValue })
+        )
+      );
+    } catch (error) {
       throw new Error(`Something went wrong while updating the tasks ${error}`);
     }
   }),
@@ -40,7 +51,7 @@ const tasksModel = {
     try {
       await deleteTask(payload);
       actions.fetchTasks();
-    } catch(error) {
+    } catch (error) {
       throw new Error(`Something went wrong while updating the tasks ${error}`);
     }
   })

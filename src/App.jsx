@@ -46,12 +46,23 @@ function App() {
   const classes = useStyles(theme);
 
   return (
-      <ThemeProvider theme={theme}>
-        <Button variant="contained" className={classes.createTaskButton} onClick={toggleIsVisible}>create Task </Button>
-        {isVisible && <CreateTask isVisible={isVisible} toggleVisible={toggleIsVisible} />}
-        <Filters handleTagChange={setTagFilter} handleTitleChange={setTitleFilter} />
-        <Board baseColumns={baseColumns}/>
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <Button
+        variant="contained"
+        className={classes.createTaskButton}
+        onClick={toggleIsVisible}
+      >
+        create Task
+      </Button>
+      {isVisible && (
+        <CreateTask isVisible={isVisible} toggleVisible={toggleIsVisible} />
+      )}
+      <Filters
+        handleTagChange={setTagFilter}
+        handleTitleChange={setTitleFilter}
+      />
+      <Board baseColumns={baseColumns} />
+    </ThemeProvider>
   );
 }
 

@@ -1,14 +1,14 @@
 import initials from 'initials';
 
 function getHomeColumn(columns, taskId) {
-  const columnId = Object.keys(columns).find(column => {
-    return columns[column].items.find(item => item.id === taskId);
+  const columnId = Object.keys(columns).find((column) => {
+    return columns[column].items.find((item) => item.id === taskId);
   });
 
   return columns[columnId];
-};
+}
 
-export function multiSelectTo(columns, selectedTaskIds, newTaskId ) {
+export function multiSelectTo(columns, selectedTaskIds, newTaskId) {
   //verify this function after adding the first item the next tasks gets added as an object instead of just ids
   // Nothing already selected
   if (!selectedTaskIds.length) {
@@ -16,11 +16,15 @@ export function multiSelectTo(columns, selectedTaskIds, newTaskId ) {
   }
 
   const columnOfNew = getHomeColumn(columns, newTaskId);
-  const indexOfNew = columnOfNew.items.map(item => item.id).indexOf(newTaskId);
+  const indexOfNew = columnOfNew.items
+    .map((item) => item.id)
+    .indexOf(newTaskId);
 
   const lastSelected = selectedTaskIds[selectedTaskIds.length - 1];
   const columnOfLast = getHomeColumn(columns, lastSelected);
-  const indexOfLast = columnOfLast.items.map(item => item.id).indexOf(lastSelected);
+  const indexOfLast = columnOfLast.items
+    .map((item) => item.id)
+    .indexOf(lastSelected);
 
   // multi selecting to another column
   // select everything up to the index of the current item
@@ -53,10 +57,10 @@ export function multiSelectTo(columns, selectedTaskIds, newTaskId ) {
   });
 
   const sorted = isSelectingForwards ? toAdd : [...toAdd].reverse();
-  const combined = [...selectedTaskIds, ...sorted.map(sorted => sorted.id)];
+  const combined = [...selectedTaskIds, ...sorted.map((sorted) => sorted.id)];
 
   return combined;
-};
+}
 
 export function getUserInitials(name) {
   return initials(name).toUpperCase();
