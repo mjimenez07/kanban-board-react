@@ -1,7 +1,8 @@
-import React, { useState, Fragment } from "react";
-import { Draggable } from "react-beautiful-dnd";
-import { useStoreActions } from "easy-peasy"
-import { Card, CardContent, CardHeader, Typography, Avatar, makeStyles, IconButton } from "@material-ui/core";
+import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { Draggable } from 'react-beautiful-dnd';
+import { useStoreActions } from 'easy-peasy';
+import { Card, CardContent, CardHeader, Typography, Avatar, makeStyles, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ConfirmationModal from '../ConfirmationModal';
@@ -177,6 +178,15 @@ function Task({
     </Draggable>
     </Fragment>
   );
+}
+
+Task.propTypes = {
+  index: PropTypes.number,
+  task: PropTypes.object,
+  toggleSelection: PropTypes.func,
+  toggleSelectionInGroup: PropTypes.func,
+  multiSelectTo: PropTypes.func,
+  isSelected: PropTypes.bool
 }
 
 export default Task;

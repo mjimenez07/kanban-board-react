@@ -31,7 +31,7 @@ const tasksModel = {
   }),
   updateTasks: thunk(async (_, {statusValue, tasks}) => {
     try {
-      Promise.all(tasks.map(task => updateTask(task.id, { ...task, status: statusValue }))).then(console.log);
+      Promise.all(tasks.map(task => updateTask(task.id, { ...task, status: statusValue })));
     } catch(error) {
       throw new Error(`Something went wrong while updating the tasks ${error}`);
     }

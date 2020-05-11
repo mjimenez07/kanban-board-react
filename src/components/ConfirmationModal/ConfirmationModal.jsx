@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText} from '@material-ui/core';
 
  function ConfirmationModal({isVisible, handleConfirm, handleCancel}) {
@@ -34,6 +35,12 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, DialogContent
       </Dialog>
     </div>
   );
+}
+
+ConfirmationModal.propTypes = {
+  isVisible: PropTypes.bool,
+  handleConfirm: PropTypes.func,
+  handleCancel: PropTypes.func
 }
 
 export default ConfirmationModal;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Grid, TextField, Button, Modal, makeStyles } from '@material-ui/core';
 import { useStoreActions } from 'easy-peasy';
 import DatePicker from 'react-datepicker';
@@ -95,6 +96,11 @@ function CreateTask({ isVisible, toggleVisible }) {
       </CreateTaskLayOut>
     </Modal>
   )
+}
+
+CreateTask.propTypes = {
+  isVisible: PropTypes.bool,
+  toggleVisible: PropTypes.func
 }
 
 export default CreateTask;

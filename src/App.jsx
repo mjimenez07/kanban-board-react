@@ -30,15 +30,15 @@ function App() {
   const filteredTasks = applyTasksFilters(titleFilter, tagFilter, tasks);
   const baseColumns = {
     'to-do': {
-      name: "To do",
+      name: 'To do',
       items: filteredTasks.filter(task => task.status === 'to-do')
     },
     'in-progress': {
-      name: "In Progress",
+      name: 'In Progress',
       items: filteredTasks.filter(task => task.status === 'in-progress')
     },
     done: {
-      name: "Done",
+      name: 'Done',
       items: filteredTasks.filter(task => task.status === 'done')
     }
   };

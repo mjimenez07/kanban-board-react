@@ -1,4 +1,4 @@
-const { createMuiTheme } = require("@material-ui/core");
+import { createMuiTheme } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {

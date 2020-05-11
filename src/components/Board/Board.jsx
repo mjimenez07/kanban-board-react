@@ -1,5 +1,6 @@
 import React from 'react';
-import { DragDropContext } from "react-beautiful-dnd";
+import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { makeStyles } from '@material-ui/core';
 
 import { theme } from '../../config';
@@ -55,6 +56,10 @@ function Board({ baseColumns }) {
   </DragDropContext>
 
   );
+}
+
+Board.propTypes = {
+  baseColumns: PropTypes.object
 }
 
 export default Board;

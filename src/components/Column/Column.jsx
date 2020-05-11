@@ -1,8 +1,10 @@
 import React  from "react";
+import PropTypes from 'prop-types';
 import { Droppable } from "react-beautiful-dnd";
 import memoizeOne from 'memoize-one';
+import { Typography } from '@material-ui/core';
+
 import Task from '../Task';
-import { Typography } from "@material-ui/core";
 
 const getSelectedMap = memoizeOne((selectedTaskIds) =>
   selectedTaskIds.reduce((previous, current)=> {
@@ -63,5 +65,15 @@ const Column = React.memo(({ column, columnId, multiSelectTo, toggleSelection, t
     </div>
   )
 })
+
+Column.propTypes = {
+  column: PropTypes.object,
+  columnId: PropTypes.string,
+  multiSelectTo: PropTypes.func,
+  toggleSelection: PropTypes.func,
+  toggleSelectionInGroup: PropTypes.func,
+  selectedTasksIds: PropTypes.array,
+  draggingTaskId: PropTypes.string
+}
 
 export default Column;
